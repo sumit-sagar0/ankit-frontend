@@ -19,7 +19,12 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
 
   const handleMouseMove = (e) => {
-    // 3D Tilt disabled as per user request
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - left) / width;
+    const y = (e.clientY - top) / height;
+    const tiltX = (y - 0.5) * -15; 
+    const tiltY = (x - 0.5) * 15;
+    setTilt({ rx: tiltX, ry: tiltY });
   };
 
   const handleMouseLeave = () => {
