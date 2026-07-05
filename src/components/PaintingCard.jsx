@@ -38,8 +38,8 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
 
   const catMeta     = getCategoryMeta(painting.category);
   const isAvailable = painting.status?.toUpperCase() !== 'SOLD';
-  // If it's a sample image, serve from frontend. Otherwise, if it's a backend upload, prepend API_URL (not implemented yet).
-  const imageUrl = painting.imageUrl?.startsWith('/samples') 
+  // Serve both samples and uploads from frontend.
+  const imageUrl = (painting.imageUrl?.startsWith('/samples') || painting.imageUrl?.startsWith('/uploads'))
                      ? painting.imageUrl 
                      : (painting.imageUrl?.startsWith('/') ? `${API_URL}${painting.imageUrl}` : painting.imageUrl);
 

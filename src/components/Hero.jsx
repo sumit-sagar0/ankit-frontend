@@ -15,9 +15,9 @@ export default function Hero({ count }) {
   const [activeSpotlightIdx, setActiveSpotlightIdx] = useState(0);
 
   const CAROUSEL_IMAGES = [
-    `${API_URL}/api/upload/images/b0329b75-3055-48b7-bb5f-14fdc62967e2.jpeg`,
-    `${API_URL}/api/upload/images/23d3aeb1-4057-49b9-a6c8-c8efd90f6f6a.jpeg`,
-    `${API_URL}/api/upload/images/132e964f-e080-40af-b079-4568e7cf6249.jpeg`
+    "/uploads/paintings/b0329b75-3055-48b7-bb5f-14fdc62967e2.jpeg",
+    "/uploads/paintings/23d3aeb1-4057-49b9-a6c8-c8efd90f6f6a.jpeg",
+    "/uploads/paintings/132e964f-e080-40af-b079-4568e7cf6249.jpeg"
   ];
 
   /* Auto-rotate spotlight */
