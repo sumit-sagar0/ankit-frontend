@@ -8,7 +8,7 @@ Welcome to the **Artistic Ankit Studio Gallery** frontend repository! This is a 
 
 ## ✨ Key Features
 - **Dynamic 3D Gallery**: Interactive painting cards with a custom 3D tilt effect on hover.
-- **Admin Panel**: A secure, password-protected (`ANKIT2024`) section for the creator to upload, edit, and delete paintings directly from the website.
+- **Admin Panel**: A secure, password-protected section for the creator to upload, edit, and delete paintings directly from the website.
 - **Commission Requests**: A seamless flow for clients to request custom canvas paintings (Anime, Watercolor, Acrylic, etc.).
 - **User Authentication**: Simple login/signup system allowing users to track their orders and chat with the artist.
 - **WhatsApp Integration**: Direct one-click chat floating button connecting clients straight to Ankit.
