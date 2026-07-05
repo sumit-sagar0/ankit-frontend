@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function FloatingSocials() {
-  const whatsappNumber = "919999999999"; // Dummy number, replace later
+  const whatsappNumber = "916203382530"; // Real number added
   const message = encodeURIComponent("Hi Ankit, I'm interested in commissioning an artwork!");
   const igLink = "https://www.instagram.com/artisticankit0?igsh=MTlydnJnbWZzZTJ0ZA==";
 
