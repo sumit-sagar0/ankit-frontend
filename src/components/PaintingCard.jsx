@@ -33,9 +33,10 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
 
   const catMeta     = getCategoryMeta(painting.category);
   const isAvailable = painting.status?.toUpperCase() !== 'SOLD';
-  const imageUrl    = painting.imageUrl?.startsWith('/')
-                        ? `${API_URL}${painting.imageUrl}`
-                        : painting.imageUrl;
+  // If it's a sample image, serve from frontend. Otherwise, if it's a backend upload, prepend API_URL (not implemented yet).
+  const imageUrl = painting.imageUrl?.startsWith('/samples') 
+                     ? painting.imageUrl 
+                     : (painting.imageUrl?.startsWith('/') ? `${API_URL}${painting.imageUrl}` : painting.imageUrl);
 
   const getYouTubeId = (url) => {
     if (!url) return null;
