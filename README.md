@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎨 Artistic Ankit - Studio Gallery (Frontend)
 
-## Getting Started
+Welcome to the **Artistic Ankit Studio Gallery** frontend repository! This is a modern, responsive, and dynamic web application built for Ankit, a passionate YouTube anime art creator. The platform serves as a digital exhibition and commission hub where fans can view high-quality physical canvas paintings and request custom artworks.
 
-First, run the development server:
+![Artistic Ankit Hero Banner](https://img.shields.io/badge/Next.js-15.0.3-black?logo=next.js)
+![React](https://img.shields.io/badge/React-19.0-blue?logo=react)
+![Vercel Deployment](https://img.shields.io/badge/Deployed_on-Vercel-black?logo=vercel)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Key Features
+- **Dynamic 3D Gallery**: Interactive painting cards with a custom 3D tilt effect on hover.
+- **Admin Panel**: A secure, password-protected (`ANKIT2024`) section for the creator to upload, edit, and delete paintings directly from the website.
+- **Commission Requests**: A seamless flow for clients to request custom canvas paintings (Anime, Watercolor, Acrylic, etc.).
+- **User Authentication**: Simple login/signup system allowing users to track their orders and chat with the artist.
+- **WhatsApp Integration**: Direct one-click chat floating button connecting clients straight to Ankit.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
+- **Framework**: Next.js (App & Pages logic via `src/`)
+- **Library**: React 19
+- **Styling**: Vanilla CSS (Custom design system, glassmorphism, responsive grids)
+- **API Calls**: Axios (Connected to Spring Boot backend)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🚀 Running Locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/sumit-sagar0/ankit-frontend.git
+   cd sartisticankit-next
+   ```
 
-## Learn More
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Environment Variables:**
+   Ensure your `.env.local` is set with the correct backend URL.
+   ```env
+   NEXT_PUBLIC_API_URL=https://ankit-backend-yxoi.onrender.com
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🌐 Live Website
+The frontend is continuously deployed on **Vercel**. Any push to the `main` branch automatically triggers a new build.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Crafted with 💙 for the Anime Art community.*
