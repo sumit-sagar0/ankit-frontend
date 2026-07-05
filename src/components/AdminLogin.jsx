@@ -5,11 +5,6 @@ import React, { useState, useEffect } from 'react';
    Change ADMIN_PASSWORD below to update the secret password.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-// ╔══════════════════════════════════════════════════╗
-// ║  👇 YAHAN PASSWORD CHANGE KARO                  ║
-// ╚══════════════════════════════════════════════════╝
-const ADMIN_PASSWORD = 'ANKIT2024';
-
 const SESSION_KEY = 'aa_admin_auth';
 
 export default function AdminLogin({ onAuthenticated }) {
@@ -26,24 +21,35 @@ export default function AdminLogin({ onAuthenticated }) {
     }
   }, [onAuthenticated]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    /* small delay for UX feel */
-    setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
+    try {
+      const res = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
         sessionStorage.setItem(SESSION_KEY, 'true');
         window.dispatchEvent(new Event('authChange'));
         onAuthenticated();
       } else {
-        setError('Galat password hai! Dobara try karo.');
+        setError(data.message || 'Galat password hai! Dobara try karo.');
         setShake(true);
         setPassword('');
         setTimeout(() => setShake(false), 600);
       }
-      setLoading(false);
-    }, 500);
+    } catch (err) {
+      setError('Server error occurred.');
+      setShake(true);
+      setTimeout(() => setShake(false), 600);
+    }
+    setLoading(false);
   };
 
   return (
