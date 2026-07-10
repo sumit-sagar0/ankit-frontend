@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config/env';
-import { Eye, EyeOff } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    UserAuthModal
@@ -165,7 +164,7 @@ export default function UserAuthModal({ isOpen, onClose, onSuccess }) {
                     cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0
                   }}
                 >
-                  {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPass ? '🙈' : '👁️'}
                 </button>
               </div>
             </div>
