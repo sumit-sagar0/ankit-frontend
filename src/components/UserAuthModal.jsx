@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config/env';
+import { Eye, EyeOff } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    UserAuthModal
@@ -15,6 +16,7 @@ export default function UserAuthModal({ isOpen, onClose, onSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPass, setShowPass] = useState(false);
   
   const [form, setForm] = useState({
     name: '',
@@ -147,11 +149,25 @@ export default function UserAuthModal({ isOpen, onClose, onSuccess }) {
             
             <div>
               <label className="studio-label" style={{ marginTop: 0 }}>Password</label>
-              <input 
-                name="password" type="password" className="studio-input" required minLength="6"
-                placeholder="••••••••" value={form.password} onChange={handleChange} 
-                disabled={loading}
-              />
+              <div style={{ position: 'relative' }}>
+                <input 
+                  name="password" type={showPass ? "text" : "password"} className="studio-input" required minLength="6"
+                  placeholder="••••••••" value={form.password} onChange={handleChange} 
+                  disabled={loading}
+                  style={{ paddingRight: 40 }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPass(!showPass)}
+                  style={{
+                    position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+                    background: 'none', border: 'none', color: 'var(--slate-400)',
+                    cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0
+                  }}
+                >
+                  {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button 
