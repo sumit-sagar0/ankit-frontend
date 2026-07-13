@@ -18,10 +18,10 @@ const SKILLS = [
 ];
 
 const TIMELINE = [
-  { year: '2020', title: 'Pehli Brush Stroke', desc: 'Anime se pyaar hua aur canvas pe utaarna shuru kiya.' },
-  { year: '2022', title: 'YouTube Channel Shuru', desc: 'Painting videos upload karne lage — community banne lagi.' },
-  { year: '2023', title: 'Studio Gallery Launch', desc: 'Physical paintings sell karna shuru — pehli sale 🎉' },
-  { year: '2024', title: 'Commissions Open', desc: 'Ab har koi apni pasand ki painting order kar sakta hai!' },
+  { year: '2020', title: 'First Brush Stroke', desc: 'Fell in love with anime and began capturing it on canvas.' },
+  { year: '2022', title: 'YouTube Channel Launch', desc: 'Started uploading painting videos — a community began to form.' },
+  { year: '2023', title: 'Studio Gallery Launch', desc: 'Started selling physical paintings — made my first sale 🎉' },
+  { year: '2024', title: 'Commissions Open', desc: 'Now everyone can order their favorite painting!' },
 ];
 
 const SOCIALS = [
@@ -259,13 +259,10 @@ export default function AboutModal({ isOpen, onClose }) {
                 animation: 'gradientFlow 5s ease infinite',
               }}>Kumar ✦</span>
             </h2>
-            <p style={{
-              fontSize: '0.88rem', color: 'var(--slate-500)',
-              lineHeight: 1.75, maxWidth: 480,
-            }}>
-              Ek passionate anime artist jo apni soul canvas pe uundel deta hai.
-              Har painting ek kahani hai — real brushstrokes, real emotion.
-              YouTube pe journey share karta hoon aur tumhare sapne canvas pe banata hoon. 🙏
+            <p style={{ color: 'var(--slate-500)', lineHeight: 1.6, marginBottom: 12 }}>
+              A passionate anime artist who pours his soul onto the canvas. 
+              Every painting tells a story — real brushstrokes, real emotion.
+              I share my journey on YouTube and bring your dreams to life on canvas. 🙏
             </p>
           </div>
         </div>
@@ -319,10 +316,10 @@ export default function AboutModal({ isOpen, onClose }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
                   { emoji: '🎌', text: 'Favourite Anime: Naruto + Demon Slayer' },
-                  { emoji: '🖌️', text: 'Medium: Acrylic aur Watercolor' },
+                  { emoji: '🖌️', text: 'Medium: Acrylic and Watercolor' },
                   { emoji: '📍', text: 'Based in: India 🇮🇳' },
-                  { emoji: '⏱️', text: 'Ek painting: 6–20 ghante lagta hai' },
-                  { emoji: '🎯', text: 'Goal: Har anime fan ke paas uski painting ho' },
+                  { emoji: '⏱️', text: 'One painting: Takes 6-20 hours' },
+                  { emoji: '🎯', text: 'Goal: Every anime fan should have their own painting' },
                 ].map(({ emoji, text }) => (
                   <div key={text} style={{
                     display: 'flex', alignItems: 'flex-start', gap: 10,

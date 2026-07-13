@@ -176,7 +176,7 @@ export default function CommissionsGalleryModal({ isOpen, onClose }) {
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--slate-500)', lineHeight: 1.6 }}>
               {commissionsOpen 
-                ? 'Ek painting choose karo jo tumhare commission ka reference ho — phir form bharo!' 
+                ? 'Choose a painting as a reference for your commission - then fill out the form!' 
                 : 'Commissions are currently full. Join the waitlist to be notified when slots open up!'}
             </p>
           </div>
@@ -397,7 +397,7 @@ export default function CommissionsGalleryModal({ isOpen, onClose }) {
                   </div>
                 ) : (
                   <p style={{ fontSize: '0.82rem', color: 'var(--slate-400)' }}>
-                    👆 Koi ek style select karo
+                    👆 Select a style
                   </p>
                 )}
               </div>

@@ -61,7 +61,7 @@ export default function AddPaintingForm({ onSuccess }) {
       const imageUrl = res.data.imageUrl;
       setForm((prev) => ({ ...prev, imageUrl }));
     } catch (err) {
-      setError('Image upload failed. Backend server chal raha hai?');
+      setError('Image upload failed. Is the backend server running?');
       setPreviewSrc(null);
       setImgFileName('');
     } finally {
@@ -85,11 +85,11 @@ export default function AddPaintingForm({ onSuccess }) {
     e.preventDefault();
 
     if (!form.title.trim() || !form.artist.trim() || (!form.isPor && !form.price)) {
-      setError('Title, Artist, aur Price required hain (agar Price on Request select nahi kiya).');
+      setError('Title, Artist, and Price are required (unless Price on Request is selected).');
       return;
     }
     if (imgUploading) {
-      setError('Image upload ho rahi hai — thoda ruko!');
+      setError('Uploading image - please wait a moment!');
       return;
     }
 
@@ -114,7 +114,7 @@ export default function AddPaintingForm({ onSuccess }) {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-        'Backend se connect nahi hua. Spring Boot server chal raha hai?'
+        'Failed to connect to backend. Is the server running?'
       );
     } finally {
       setLoading(false);
@@ -259,7 +259,7 @@ export default function AddPaintingForm({ onSuccess }) {
                   letterSpacing: '0.04em', flex: 1,
                   overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                 }}>
-                  {imgFileName} — Server pe save ho gayi!
+                  {imgFileName} - Saved to server!
                 </span>
                 <button
                   type="button"
@@ -301,7 +301,7 @@ export default function AddPaintingForm({ onSuccess }) {
               fontSize: '0.88rem', fontWeight: 700,
               color: 'var(--blue-600)', marginBottom: 4,
             }}>
-              Click karke photo choose karo
+              Click to choose a photo
             </div>
             <div style={{
               fontSize: '0.74rem', color: 'var(--slate-400)',
@@ -438,7 +438,7 @@ export default function AddPaintingForm({ onSuccess }) {
               Uploading to Gallery…
             </span>
           ) : imgUploading ? (
-            '⏳ Image upload ho rahi hai...'
+            '⏳ Uploading image...'
           ) : (
             '⚡ Upload to Studio Gallery'
           )}

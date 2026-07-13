@@ -39,7 +39,7 @@ export default function AdminLogin({ onAuthenticated }) {
         window.dispatchEvent(new Event('authChange'));
         onAuthenticated();
       } else {
-        setError(data.message || 'Galat password hai! Dobara try karo.');
+        setError(data.message || 'Incorrect password! Please try again.');
         setShake(true);
         setPassword('');
         setTimeout(() => setShake(false), 600);
@@ -228,7 +228,7 @@ export default function AdminLogin({ onAuthenticated }) {
           fontFamily: 'JetBrains Mono, monospace',
           letterSpacing: '0.04em',
         }}>
-          Session tab band hone pe automatically logout ho jaata hai
+          Session logs out automatically when the tab is closed
         </p>
       </div>
     </>
