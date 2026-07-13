@@ -134,7 +134,7 @@ export default function AdminLogin({ onAuthenticated }) {
           lineHeight: 1.6,
           marginBottom: 28,
         }}>
-          Sirf Ankit ke liye — password daalo aur paintings manage karo.
+          Exclusive access for Ankit — enter your password to manage paintings.
         </p>
 
         {/* Error message */}
@@ -170,7 +170,7 @@ export default function AdminLogin({ onAuthenticated }) {
               id="admin-pass"
               type={showPass ? 'text' : 'password'}
               className="studio-input"
-              placeholder="Password daalo..."
+              placeholder="Enter password..."
               value={password}
               onChange={(e) => { setPassword(e.target.value); setError(''); }}
               autoComplete="current-password"
