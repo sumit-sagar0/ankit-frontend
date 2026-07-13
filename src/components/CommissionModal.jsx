@@ -422,7 +422,7 @@ export default function CommissionModal({ isOpen, onClose, prefillStyle = '' }) 
               Order Received!
             </h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--slate-500)', lineHeight: 1.6, maxWidth: 340, margin: '0 auto 24px' }}>
-              Your request has been saved to Ankit's <b>Secret Admin Dashboard</b>. 
+              Your request has been saved to Ankit&apos;s <b>Secret Admin Dashboard</b>. 
               For a faster response, send Ankit a direct message on Instagram to let him know you submitted a request! 🙏
             </p>
             
