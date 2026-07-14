@@ -37,6 +37,22 @@ export default function AdminCommissions() {
     }
   };
 
+  const deleteCommission = async (id) => {
+    if (!window.confirm('Are you sure you want to completely delete this request?')) return;
+    try {
+      await axios.delete(`${API_URL}/api/commissions/${id}`);
+      window.dispatchEvent(new CustomEvent('showGlobalToast', { 
+        detail: { message: 'Commission request deleted!', type: 'success' } 
+      }));
+      fetchCommissions();
+    } catch (err) {
+      console.error('Failed to delete:', err);
+      window.dispatchEvent(new CustomEvent('showGlobalToast', { 
+        detail: { message: 'Error deleting request', type: 'error' } 
+      }));
+    }
+  };
+
   if (loading) {
     return <div style={{ padding: 40, textAlign: 'center', color: 'var(--slate-500)' }}>Loading requests...</div>;
   }
@@ -109,29 +125,53 @@ export default function AdminCommissions() {
 
           {/* Actions - Advanced Tracking */}
           <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12, padding: '12px', background: 'var(--snow)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--slate-100)' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--slate-700)' }}>Update Status:</span>
-            <select
-              value={req.status}
-              onChange={(e) => updateStatus(req.id, e.target.value)}
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--slate-700)' }}>Update Status:</span>
+              <select
+                value={req.status}
+                onChange={(e) => updateStatus(req.id, e.target.value)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--slate-200)',
+                  background: 'var(--white)',
+                  color: 'var(--slate-800)',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  outline: 'none',
+                }}
+              >
+                <option value="PENDING">PENDING (Reviewing)</option>
+                <option value="ACCEPTED">ACCEPTED (Approved)</option>
+                <option value="IN_PROGRESS">IN PROGRESS (Painting)</option>
+                <option value="COMPLETED">COMPLETED (Ready to ship)</option>
+                <option value="SHIPPED">SHIPPED (On its way)</option>
+                <option value="REJECTED">REJECTED (Declined)</option>
+              </select>
+            </div>
+            
+            <button
+              onClick={() => deleteCommission(req.id)}
               style={{
+                background: 'rgba(244,63,94,0.1)',
+                border: '1px solid rgba(244,63,94,0.2)',
+                color: '#e11d48',
                 padding: '6px 12px',
                 borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--slate-200)',
-                background: 'var(--white)',
-                color: 'var(--slate-800)',
                 fontSize: '0.85rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                outline: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'all 0.2s'
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(244,63,94,0.2)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(244,63,94,0.1)'; }}
             >
-              <option value="PENDING">PENDING (Reviewing)</option>
-              <option value="ACCEPTED">ACCEPTED (Approved)</option>
-              <option value="IN_PROGRESS">IN PROGRESS (Painting)</option>
-              <option value="COMPLETED">COMPLETED (Ready to ship)</option>
-              <option value="SHIPPED">SHIPPED (On its way)</option>
-              <option value="REJECTED">REJECTED (Declined)</option>
-            </select>
+              🗑️ Delete
+            </button>
           </div>
         </div>
       ))}
