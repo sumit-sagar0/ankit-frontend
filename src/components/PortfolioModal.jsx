@@ -38,7 +38,7 @@ export default function PortfolioModal({ isOpen, onClose }) {
         const data = Array.isArray(res.data) ? res.data : [];
         const formatted = data.map(p => ({
           id: p.id,
-          file: p.imageUrl?.startsWith('/') ? `${API_URL}${p.imageUrl}` : (p.imageUrl || '/samples/01_anime_sketch.png'),
+          file: (p.imageUrl?.startsWith('/samples') || p.imageUrl?.startsWith('/uploads')) ? p.imageUrl : (p.imageUrl?.startsWith('/') ? `${API_URL}${p.imageUrl}` : (p.imageUrl || '/samples/01_anime_sketch.png')),
           title: p.title || 'Untitled',
           medium: p.artist || 'Artistic Ankit',
           category: p.category || 'Art',
