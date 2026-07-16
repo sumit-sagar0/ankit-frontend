@@ -529,7 +529,7 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
                 const user = JSON.parse(userStr);
                 const text = `Hi Artistic Ankit, I'm interested in purchasing the painting: ${painting.title}. My name is ${user.name} and my email is ${user.email}.`;
                 setIsIgModalOpen(false);
-                window.open(`https://wa.me/919999999999?text=${encodeURIComponent(text)}`, '_blank');
+                window.open(`https://wa.me/916203382530?text=${encodeURIComponent(text)}`, '_blank');
               }}
               style={{
                 display: 'block', width: '100%', padding: '14px', borderRadius: 12,
