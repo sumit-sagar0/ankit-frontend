@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
+import axios from 'axios';
+import { API_BASE } from '../constants/categoryMeta';
+import { API_URL } from '../config/env';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PortfolioModal — Cinematic Dark Gallery Overlay
@@ -7,83 +10,6 @@ import Image from 'next/image';
      isOpen   {boolean}
      onClose  {() => void}
    ═══════════════════════════════════════════════════════════════════════════ */
-
-const ARTWORKS = [
-  {
-    id: 1,  file: '/samples/01_anime_sketch.png',
-    title: 'The Warrior Within',     medium: 'Pencil & Ink',    category: 'Sketch',
-    size: 'A3', year: '2024', featured: true, span: 2,
-    desc: 'A raw, intense close-up of a shonen warrior — every line drawn by hand.',
-  },
-  {
-    id: 2,  file: '/samples/06_shonen.png',
-    title: 'Naruto\'s Resolve',       medium: 'Acrylic Canvas',  category: 'Shonen',
-    size: '16×20"', year: '2024', featured: true, span: 1,
-    desc: 'Glowing orange aura, bold dynamic pose — the spirit of a true hero.',
-  },
-  {
-    id: 3,  file: '/samples/08_shojo.png',
-    title: 'Sakura in Full Bloom',    medium: 'Watercolor',      category: 'Shōjo',
-    size: 'A3', year: '2023', featured: false, span: 1,
-    desc: 'Delicate petals falling, soft pinks — a poem painted in watercolor.',
-  },
-  {
-    id: 4,  file: '/samples/04_oil.png',
-    title: 'Dragon Ascendant',        medium: 'Oil on Canvas',   category: 'Fantasy',
-    size: '18×24"', year: '2024', featured: true, span: 1,
-    desc: 'Dark fantasy meets anime — thick oil strokes bring the dragon to life.',
-  },
-  {
-    id: 5,  file: '/samples/10_digital.png',
-    title: 'Neon Phantom',            medium: 'Print on Canvas', category: 'Digital',
-    size: 'A2', year: '2024', featured: false, span: 1,
-    desc: 'Cyberpunk anime girl — neon blue eyes cutting through the dark city.',
-  },
-  {
-    id: 6,  file: '/samples/03_watercolor.png',
-    title: 'Moonlit Meditation',      medium: 'Watercolor',      category: 'Watercolor',
-    size: 'A3', year: '2023', featured: false, span: 1,
-    desc: 'Serenity under the moon — soft watercolor bleeds create pure peace.',
-  },
-  {
-    id: 7,  file: '/samples/07_isekai.png',
-    title: 'Gateway to Another World','medium': 'Watercolor',    category: 'Isekai',
-    size: '16×20"', year: '2024', featured: true, span: 2,
-    desc: 'A glowing portal in the enchanted forest — the isekai journey begins here.',
-  },
-  {
-    id: 8,  file: '/samples/05_charcoal.png',
-    title: 'Bushido',                 medium: 'Charcoal Sketch', category: 'Sketch',
-    size: 'A3', year: '2023', featured: false, span: 1,
-    desc: 'The samurai\'s spirit captured in raw charcoal — discipline in every stroke.',
-  },
-  {
-    id: 9,  file: '/samples/09_mecha.png',
-    title: 'Iron Colossus',           medium: 'Acrylic Canvas',  category: 'Mecha',
-    size: '18×24"', year: '2024', featured: false, span: 1,
-    desc: 'Gundam-inspired giant — metallic detail, blue energy, painted on canvas.',
-  },
-  {
-    id: 10, file: '/samples/11_seinen.png',
-    title: 'Rain & Redemption',       medium: 'Acrylic Canvas',  category: 'Seinen',
-    size: 'A3', year: '2024', featured: false, span: 1,
-    desc: 'A gritty antihero in a rainy alley — cinematic and deeply moody.',
-  },
-  {
-    id: 11, file: '/samples/02_acrylic.png',
-    title: 'Blue Blossom',            medium: 'Acrylic Canvas',  category: 'Acrylic',
-    size: '16×20"', year: '2023', featured: true, span: 1,
-    desc: 'Flowing blue hair, cherry blossoms — vibrant acrylic bursting with life.',
-  },
-  {
-    id: 12, file: '/samples/12_slice_of_life.png',
-    title: 'Golden Hour',             medium: 'Watercolor',      category: 'Slice of Life',
-    size: 'A3', year: '2024', featured: false, span: 1,
-    desc: 'Two friends, a hilltop, a sunset — the most human moment in anime form.',
-  },
-];
-
-const CATEGORIES = ['All', 'Sketch', 'Acrylic', 'Watercolor', 'Shonen', 'Fantasy', 'Digital', 'Isekai', 'Shōjo', 'Mecha', 'Seinen', 'Slice of Life'];
 
 const CATEGORY_COLORS = {
   'Sketch':       '#60a5fa',
@@ -100,13 +26,35 @@ const CATEGORY_COLORS = {
 };
 
 export default function PortfolioModal({ isOpen, onClose }) {
+  const [paintings, setPaintings] = useState([]);
+  const [categories, setCategories] = useState(['All']);
   const [activeFilter, setActiveFilter] = useState('All');
   const [preview,      setPreview]      = useState(null); 
   const [hoveredId,    setHoveredId]    = useState(null);
 
+  useEffect(() => {
+    if (isOpen) {
+      axios.get(API_BASE).then(res => {
+        const data = Array.isArray(res.data) ? res.data : [];
+        const formatted = data.map(p => ({
+          id: p.id,
+          file: p.imageUrl?.startsWith('/') ? `${API_URL}${p.imageUrl}` : (p.imageUrl || '/samples/01_anime_sketch.png'),
+          title: p.title || 'Untitled',
+          medium: p.artist || 'Artistic Ankit',
+          category: p.category || 'Art',
+          size: p.size || '',
+          year: p.year || new Date().getFullYear().toString(),
+          desc: p.description || 'An original artwork by Artistic Ankit.',
+        }));
+        setPaintings(formatted);
+        setCategories(['All', ...new Set(formatted.map(f => f.category))]);
+      }).catch(err => console.error("Failed to load portfolio", err));
+    }
+  }, [isOpen]);
+
   const filtered = activeFilter === 'All'
-    ? ARTWORKS
-    : ARTWORKS.filter((a) => a.category === activeFilter);
+    ? paintings
+    : paintings.filter((a) => a.category === activeFilter);
 
   /* ── Body scroll lock ── */
   useEffect(() => {
@@ -202,7 +150,7 @@ export default function PortfolioModal({ isOpen, onClose }) {
           
           {/* ── Filters ── */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 50, justifyContent: 'center' }}>
-            {CATEGORIES.map(cat => {
+            {categories.map(cat => {
               const isActive = activeFilter === cat;
               const color = cat === 'All' ? '#fff' : (CATEGORY_COLORS[cat] || '#fff');
               return (
