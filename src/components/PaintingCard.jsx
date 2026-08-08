@@ -224,16 +224,17 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
             {/* Floating Top Badges */}
             <div style={{ position: 'absolute', top: 10, left: 10, right: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 5 }}>
               <span style={{
-                background: 'rgba(255,255,255,0.92)',
-                backdropFilter: 'blur(8px)',
-                color: 'var(--slate-900)',
-                padding: '3px 9px',
-                borderRadius: 6,
-                fontSize: '0.6rem',
-                fontWeight: 700,
-                letterSpacing: '0.05em',
+                background: catMeta.color || '#8b5cf6',
+                color: '#ffffff',
+                padding: '4px 10px',
+                borderRadius: 999,
+                fontSize: '0.62rem',
+                fontWeight: 800,
+                letterSpacing: '0.06em',
                 textTransform: 'uppercase',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                boxShadow: `0 3px 10px ${catMeta.color}45`,
+                border: '1px solid rgba(255,255,255,0.3)',
+                backdropFilter: 'blur(8px)',
               }}>
                 {catMeta.label}
               </span>
@@ -373,15 +374,20 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
                 <button 
                   onClick={() => setIsFlipped(true)}
                   style={{
-                    background: 'var(--slate-900)',
-                    color: '#ffffff', border: 'none',
-                    padding: '7px 14px', borderRadius: 999, fontSize: '0.76rem', fontWeight: 700,
-                    cursor: 'pointer', transition: 'all 0.2s ease',
-                    boxShadow: '0 2px 8px rgba(15,23,42,0.15)',
+                    background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    padding: '7px 16px',
+                    borderRadius: 999,
+                    fontSize: '0.76rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    transition: 'all 0.22s ease',
+                    boxShadow: '0 4px 14px rgba(139,92,246,0.35)',
                     letterSpacing: '0.01em'
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#8b5cf6'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'var(--slate-900)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 18px rgba(236,72,153,0.45)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(139,92,246,0.35)'; }}
                 >
                   View Details
                 </button>
