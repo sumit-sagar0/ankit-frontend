@@ -194,28 +194,45 @@ export default function PaintingGrid({ onCountChange }) {
       </div>
 
       {/* ── Category Pills ── */}
-      {uniqueCategories.length > 2 && (
-        <div style={{ display: 'flex', gap: 6, marginBottom: 30, flexWrap: 'wrap' }}>
-          {uniqueCategories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setCategoryFilter(cat)}
-              style={{
-                padding: '4px 12px',
-                borderRadius: 999,
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                border: '1px solid',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                background: categoryFilter === cat ? 'var(--blue-600)' : 'transparent',
-                color: categoryFilter === cat ? 'white' : 'var(--slate-500)',
-                borderColor: categoryFilter === cat ? 'var(--blue-600)' : 'var(--slate-200)',
-              }}
-            >
-              {cat === 'ALL' ? 'All Mediums' : cat}
-            </button>
-          ))}
+      {uniqueCategories.length > 1 && (
+        <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap', alignItems: 'center' }}>
+          {uniqueCategories.map(cat => {
+            const isActive = categoryFilter === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setCategoryFilter(cat)}
+                style={{
+                  padding: '6px 16px',
+                  borderRadius: 999,
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  fontFamily: 'JetBrains Mono, monospace',
+                  textTransform: 'uppercase',
+                  border: isActive ? '1.5px solid transparent' : '1.5px solid var(--slate-200)',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                  background: isActive ? 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)' : 'var(--white)',
+                  color: isActive ? '#ffffff' : 'var(--slate-700)',
+                  boxShadow: isActive ? '0 4px 15px rgba(139,92,246,0.35)' : 'var(--shadow-sm)',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.borderColor = 'rgba(139,92,246,0.5)';
+                    e.currentTarget.style.color = 'var(--blue-600)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.borderColor = 'var(--slate-200)';
+                    e.currentTarget.style.color = 'var(--slate-700)';
+                  }
+                }}
+              >
+                {cat === 'ALL' ? 'ALL' : cat}
+              </button>
+            );
+          })}
         </div>
       )}
 

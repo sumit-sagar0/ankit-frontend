@@ -103,7 +103,7 @@ export default function UserAuthModal({ isOpen, onClose, onSuccess }) {
           overflow: 'hidden'
         }}
       >
-        <div style={{ height: 4, background: 'var(--gradient-blue)', backgroundSize: '200% 200%', animation: 'gradientFlow 4s ease infinite' }} />
+        <div style={{ height: 4, backgroundImage: 'var(--gradient-blue)', backgroundSize: '200% 200%', animation: 'gradientFlow 4s ease infinite' }} />
         
         <div style={{ padding: '32px 32px 0', position: 'relative' }}>
           <button 

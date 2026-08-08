@@ -27,36 +27,6 @@ function Toast({ message, type, onDone }) {
   );
 }
 
-/* ── Subtle animated background orbs ── */
-function BackgroundDecor() {
-  return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-      {/* Blue orb — top left */}
-      <div style={{
-        position: 'absolute', width: 800, height: 800, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(37,99,235,0.055) 0%, transparent 65%)',
-        top: '-20%', left: '-15%',
-        animation: 'blueOrb 22s ease-in-out infinite',
-      }} />
-      {/* Cyan orb — bottom right */}
-      <div style={{
-        position: 'absolute', width: 600, height: 600, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 65%)',
-        bottom: '-14%', right: '-10%',
-        animation: 'blueOrb 28s ease-in-out infinite reverse',
-      }} />
-      {/* Subtle dot grid */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: 'radial-gradient(rgba(37,99,235,0.07) 1px, transparent 1px)',
-        backgroundSize: '32px 32px',
-        maskImage: 'radial-gradient(ellipse 75% 75% at 50% 50%, black 20%, transparent 80%)',
-        WebkitMaskImage: 'radial-gradient(ellipse 75% 75% at 50% 50%, black 20%, transparent 80%)',
-      }} />
-    </div>
-  );
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    App — Root orchestrator
    Owns the toast queue and the live painting count that Hero displays.
@@ -117,8 +87,6 @@ export default function App() {
   return (
     <div style={{ position: 'relative', minHeight: '100vh', background: 'var(--snow)' }}>
 
-      {/* ── Animated background layer ── */}
-      <BackgroundDecor />
 
       {/* ── Toast notification ── */}
       {toast && (

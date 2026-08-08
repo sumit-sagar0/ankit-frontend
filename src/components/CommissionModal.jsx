@@ -162,7 +162,7 @@ export default function CommissionModal({ isOpen, onClose, prefillStyle = '' }) 
         {/* ── Top accent bar ── */}
         <div style={{
           height:           4,
-          background:       'var(--gradient-blue)',
+          backgroundImage:  'var(--gradient-blue)',
           borderRadius:     '24px 24px 0 0',
           backgroundSize:   '200% 200%',
           animation:        'gradientFlow 4s ease infinite',

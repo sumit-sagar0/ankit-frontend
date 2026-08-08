@@ -149,7 +149,7 @@ export default function AboutModal({ isOpen, onClose }) {
         {/* ── Top gradient bar ── */}
         <div style={{
           height: 4,
-          background: 'var(--gradient-blue)',
+          backgroundImage: 'var(--gradient-blue)',
           backgroundSize: '200% 200%',
           animation: 'gradientFlow 4s ease infinite',
           borderRadius: '24px 24px 0 0',
@@ -252,12 +252,12 @@ export default function AboutModal({ isOpen, onClose }) {
             }}>
               <span style={{ color: 'var(--slate-900)' }}>Ankit </span>
               <span style={{
-                background: 'var(--gradient-blue)',
+                backgroundImage: 'var(--gradient-blue)',
                 backgroundSize: '200% auto',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 animation: 'gradientFlow 5s ease infinite',
-              }}>Kumar ✦</span>
+              }}>Kumar 🎨</span>
             </h2>
             <p style={{ color: 'var(--slate-500)', lineHeight: 1.6, marginBottom: 12 }}>
               A passionate anime artist who pours his soul onto the canvas. 

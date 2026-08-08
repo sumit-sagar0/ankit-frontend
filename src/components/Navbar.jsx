@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import CommissionsGalleryModal from './CommissionsGalleryModal';
 import AboutModal              from './AboutModal';
 import PortfolioModal          from './PortfolioModal';
@@ -23,9 +24,17 @@ export default function Navbar() {
   const { appData } = useAppData();
   const commissionsAvailable = appData?.commissionsOpen;
   
-  const [isDarkMode,        setIsDarkMode]        = useState(() => {
-    return typeof window !== 'undefined' && localStorage.getItem('aa_theme') === 'dark';
-  });
+  const [isDarkMode,        setIsDarkMode]        = useState(false);
+  const [mounted,           setMounted]           = useState(false);
+  const [isMobileMenuOpen,  setIsMobileMenuOpen]  = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const saved = localStorage.getItem('aa_theme');
+    if (saved === 'dark') {
+      setIsDarkMode(true);
+    }
+  }, []);
 
   useEffect(() => {
     const checkUser = () => {
@@ -55,6 +64,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     if (isDarkMode) {
       document.body.classList.add('dark-theme');
       localStorage.setItem('aa_theme', 'dark');
@@ -62,7 +72,7 @@ export default function Navbar() {
       document.body.classList.remove('dark-theme');
       localStorage.setItem('aa_theme', 'light');
     }
-  }, [isDarkMode]);
+  }, [isDarkMode, mounted]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -92,13 +102,15 @@ export default function Navbar() {
           top: 0,
           zIndex: 100,
           padding: '0 40px',
-          background: scrolled ? 'rgba(248,250,252,0.92)' : 'rgba(248,250,252,0.7)',
+          background: isDarkMode 
+            ? (scrolled ? 'rgba(15,23,42,0.94)' : 'rgba(15,23,42,0.85)') 
+            : (scrolled ? 'rgba(248,250,252,0.94)' : 'rgba(248,250,252,0.85)'),
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           borderBottom: scrolled
-            ? '1px solid rgba(37,99,235,0.15)'
-            : '1px solid rgba(37,99,235,0.07)',
-          boxShadow: scrolled ? '0 4px 24px rgba(37,99,235,0.08)' : 'none',
+            ? (isDarkMode ? '1px solid rgba(139,92,246,0.25)' : '1px solid rgba(37,99,235,0.15)')
+            : (isDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(37,99,235,0.07)'),
+          boxShadow: scrolled ? (isDarkMode ? '0 4px 24px rgba(0,0,0,0.5)' : '0 4px 24px rgba(37,99,235,0.08)') : 'none',
           transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
         }}
       >
@@ -120,36 +132,24 @@ export default function Navbar() {
             onClick={handleLogoClick}
             style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0, cursor: 'pointer' }}
           >
-            <div
-              style={{
-                width: 42,
-                height: 42,
-                borderRadius: 10,
-                flexShrink: 0,
-                background: 'var(--gradient-blue)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-                boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
-                animation: 'floatY 4.5s ease-in-out infinite',
-              }}
-            >
-              🎨
+            <div style={{ position: 'relative', width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, boxShadow: '0 2px 10px rgba(139,92,246,0.3)', border: '1.5px solid rgba(139,92,246,0.4)' }}>
+              <Image
+                src="/logo.png"
+                alt="Artistic Ankit Logo"
+                width={42}
+                height={42}
+                style={{ objectFit: 'cover' }}
+              />
             </div>
             <div>
               <div
                 className="font-sora"
                 style={{
-                  fontSize: '1rem',
-                  fontWeight: 800,
-                  letterSpacing: '-0.01em',
+                  fontSize: '1.05rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.02em',
                   lineHeight: 1.1,
-                  background: 'linear-gradient(90deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)',
-                  backgroundSize: '200% auto',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  animation: 'gradientFlow 5s ease infinite',
+                  color: 'var(--slate-900)',
                 }}
               >
                 ARTISTIC ANKIT
@@ -224,12 +224,12 @@ export default function Navbar() {
                 padding:       '7px 16px',
                 marginLeft:    2,
                 borderRadius:  'var(--radius-sm)',
-                border:        '1.5px solid rgba(37,99,235,0.3)',
-                background:    'rgba(37,99,235,0.06)',
-                color:         'var(--blue-600)',
+                border:        '1px solid var(--slate-200)',
+                background:    'var(--white)',
+                color:         'var(--slate-600)',
                 fontFamily:    'Inter, sans-serif',
                 fontSize:      '0.82rem',
-                fontWeight:    600,
+                fontWeight:    500,
                 letterSpacing: '0.02em',
                 cursor:        'pointer',
                 transition:    'all 0.22s ease',
@@ -242,14 +242,13 @@ export default function Navbar() {
                 e.currentTarget.style.transform   = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background  = 'rgba(37,99,235,0.06)';
-                e.currentTarget.style.color       = 'var(--blue-600)';
-                e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
+                e.currentTarget.style.background  = 'var(--white)';
+                e.currentTarget.style.color       = 'var(--slate-600)';
+                e.currentTarget.style.borderColor = 'var(--slate-200)';
                 e.currentTarget.style.boxShadow   = 'none';
                 e.currentTarget.style.transform   = 'translateY(0)';
               }}
             >
-              <span style={{ fontSize: 13 }}>🖼️</span>
               Portfolio
             </button>
 
@@ -263,12 +262,12 @@ export default function Navbar() {
                 padding:       '7px 16px',
                 marginLeft:    2,
                 borderRadius:  'var(--radius-sm)',
-                border:        '1.5px solid rgba(37,99,235,0.3)',
-                background:    'rgba(37,99,235,0.06)',
-                color:         'var(--blue-600)',
+                border:        '1px solid var(--slate-200)',
+                background:    'var(--white)',
+                color:         'var(--slate-600)',
                 fontFamily:    'Inter, sans-serif',
                 fontSize:      '0.82rem',
-                fontWeight:    600,
+                fontWeight:    500,
                 letterSpacing: '0.02em',
                 cursor:        'pointer',
                 transition:    'all 0.22s ease',
@@ -281,14 +280,13 @@ export default function Navbar() {
                 e.currentTarget.style.transform   = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background  = 'rgba(37,99,235,0.06)';
-                e.currentTarget.style.color       = 'var(--blue-600)';
-                e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
+                e.currentTarget.style.background  = 'var(--white)';
+                e.currentTarget.style.color       = 'var(--slate-600)';
+                e.currentTarget.style.borderColor = 'var(--slate-200)';
                 e.currentTarget.style.boxShadow   = 'none';
                 e.currentTarget.style.transform   = 'translateY(0)';
               }}
             >
-              <span style={{ fontSize: 13 }}>👤</span>
               About
             </button>
 
@@ -301,14 +299,14 @@ export default function Navbar() {
                 alignItems:   'center',
                 gap:          6,
                 padding:      '7px 16px',
-                marginLeft:   6,
+                marginLeft:   2,
                 borderRadius: 'var(--radius-sm)',
-                border:       '1.5px solid rgba(37,99,235,0.3)',
-                background:   'rgba(37,99,235,0.06)',
-                color:        'var(--blue-600)',
+                border:       '1px solid var(--slate-200)',
+                background:   'var(--white)',
+                color:        'var(--slate-600)',
                 fontFamily:   'Inter, sans-serif',
                 fontSize:     '0.82rem',
-                fontWeight:   600,
+                fontWeight:   500,
                 letterSpacing:'0.02em',
                 cursor:       'pointer',
                 transition:   'all 0.22s ease',
@@ -321,15 +319,14 @@ export default function Navbar() {
                 e.currentTarget.style.transform   = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background  = 'rgba(37,99,235,0.06)';
-                e.currentTarget.style.color       = 'var(--blue-600)';
-                e.currentTarget.style.borderColor = 'rgba(37,99,235,0.3)';
+                e.currentTarget.style.background  = 'var(--white)';
+                e.currentTarget.style.color       = 'var(--slate-600)';
+                e.currentTarget.style.borderColor = 'var(--slate-200)';
                 e.currentTarget.style.boxShadow   = 'none';
                 e.currentTarget.style.transform   = 'translateY(0)';
               }}
             >
-              <span style={{ fontSize: 13 }}>{commissionsAvailable ? '✉️' : '⏳'}</span>
-              {commissionsAvailable ? 'Commissions' : 'Waitlist'}
+              {commissionsAvailable ? 'Customize Your Image' : 'Waitlist'}
             </button>
 
           </nav>
@@ -371,46 +368,145 @@ export default function Navbar() {
             )}
 
             {/* ── Blue Pulse "Studio Live" Status ── */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <div
-              style={{
-                display:    'flex',
-                alignItems: 'center',
-                gap:        8,
-                padding:    '8px 16px',
-                borderRadius: 999,
-                border:     '1.5px solid rgba(37,99,235,0.25)',
-                background: 'rgba(37,99,235,0.06)',
-              }}
-            >
-              <span
+            <div className="gallery-live-badge" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+              <div
                 style={{
-                  width:       8,
-                  height:      8,
-                  borderRadius:'50%',
-                  background:  'var(--blue-600)',
-                  animation:   'activeDot 2s ease-in-out infinite, pulseBlue 2s ease-in-out infinite',
-                  display:     'inline-block',
-                  flexShrink:  0,
-                }}
-              />
-              <span
-                className="font-mono"
-                style={{
-                  fontSize:      '0.65rem',
-                  fontWeight:    600,
-                  letterSpacing: '0.1em',
-                  color:         'var(--blue-600)',
+                  display:    'flex',
+                  alignItems: 'center',
+                  gap:        8,
+                  padding:    '8px 16px',
+                  borderRadius: 999,
+                  border:     '1px solid var(--slate-200)',
+                  background: 'var(--white)',
                 }}
               >
-                STUDIO LIVE
-              </span>
+                <span
+                  style={{
+                    width:       8,
+                    height:      8,
+                    borderRadius:'50%',
+                    background:  'var(--emerald-500)',
+                    animation:   'activeDot 2.5s ease-in-out infinite',
+                    display:     'inline-block',
+                    flexShrink:  0,
+                  }}
+                />
+                <span
+                  className="font-mono"
+                  style={{
+                    fontSize:      '0.65rem',
+                    fontWeight:    500,
+                    letterSpacing: '0.1em',
+                    color:         'var(--slate-600)',
+                  }}
+                >
+                  GALLERY LIVE
+                </span>
+              </div>
             </div>
-          </div>
+
+            {/* ── Mobile Hamburger Toggle Button ── */}
+            <button
+              className="mobile-menu-btn"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              style={{
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                border: '1px solid var(--slate-200)',
+                background: 'var(--white)',
+                color: 'var(--slate-800)',
+                fontSize: '1.2rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              aria-label="Toggle Mobile Navigation Menu"
+            >
+              {isMobileMenuOpen ? '✕' : '☰'}
+            </button>
           </div>
 
         </div>
       </header>
+
+      {/* ── Mobile Drawer Dropdown ── */}
+      {isMobileMenuOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 72, left: 0, right: 0, bottom: 0,
+            background: 'rgba(15,23,42,0.6)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            zIndex: 99,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'var(--white)',
+              borderBottom: '1px solid var(--slate-200)',
+              padding: '24px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              boxShadow: '0 12px 32px rgba(0,0,0,0.18)',
+              animation: 'fadeSlideUp 0.3s ease',
+            }}
+          >
+            <button
+              onClick={() => { setIsDarkMode(!isDarkMode); setIsMobileMenuOpen(false); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 12,
+                background: 'var(--slate-50)', border: '1px solid var(--slate-200)', color: 'var(--slate-800)',
+                fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', width: '100%'
+              }}
+            >
+              <span style={{ fontSize: 18 }}>{isDarkMode ? '☀️' : '🌙'}</span> {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            </button>
+
+            <button
+              onClick={() => { setIsPortfolioOpen(true); setIsMobileMenuOpen(false); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 12,
+                background: 'var(--slate-50)', border: '1px solid var(--slate-200)', color: 'var(--slate-800)',
+                fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', width: '100%'
+              }}
+            >
+              <span>🖼️</span> Portfolio Exhibition
+            </button>
+
+            <button
+              onClick={() => { setIsAboutOpen(true); setIsMobileMenuOpen(false); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 12,
+                background: 'var(--slate-50)', border: '1px solid var(--slate-200)', color: 'var(--slate-800)',
+                fontWeight: 600, cursor: 'pointer', fontSize: '0.9rem', width: '100%'
+              }}
+            >
+              <span>📖</span> About Artist
+            </button>
+
+            <button
+              onClick={() => { setIsCommissionOpen(true); setIsMobileMenuOpen(false); }}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 16px', borderRadius: 12,
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)', color: '#ffffff',
+                fontWeight: 700, cursor: 'pointer', border: 'none', fontSize: '0.92rem', width: '100%',
+                boxShadow: '0 4px 16px rgba(139,92,246,0.35)'
+              }}
+            >
+              <span>🎨</span> {commissionsAvailable ? 'Customize Your Image' : 'Join Waitlist'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ── Modals ── */}
       <ClientDashboardModal

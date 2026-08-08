@@ -155,7 +155,7 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
           transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
           transformStyle: 'preserve-3d',
           transform: `rotateY(${isFlipped ? 180 : tilt.ry}deg) rotateX(${isFlipped ? 0 : tilt.rx}deg)`,
-          minHeight: 460
+          minHeight: 410
         }}
       >
         {/* ════════════════ FRONT FACE ════════════════ */}
@@ -166,107 +166,225 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
             backfaceVisibility: 'hidden',
             display: 'flex', flexDirection: 'column',
             margin: 0,
-            height: '100%'
+            padding: 12,
+            height: '100%',
+            borderRadius: 20,
+            boxShadow: '0 8px 30px rgba(15,23,42,0.06), 0 2px 8px rgba(139,92,246,0.04)',
+            background: 'var(--white)',
+            border: '1px solid var(--slate-100)'
           }}
         >
           {/* ── Glare Effect (only visible on tilt) ── */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10,
-            background: `linear-gradient(105deg, transparent 20%, rgba(255,255,255,${Math.abs(tilt.rx) * 0.015}) 25%, transparent 30%)`,
-            mixBlendMode: 'overlay'
+            background: `linear-gradient(105deg, transparent 20%, rgba(255,255,255,${Math.abs(tilt.rx) * 0.02}) 25%, transparent 30%)`,
+            mixBlendMode: 'overlay',
+            borderRadius: 20
           }} />
 
-          {/* ── Category colour stripe (top) ── */}
-          <div style={{ height: 4, background: `linear-gradient(90deg, ${catMeta.color}, ${catMeta.color}55, transparent)` }} />
-
+          {/* ── Inner Rounded Image Canvas (Dribbble Product Style) ── */}
           <div
             className="painting-image-wrapper"
             style={{
               aspectRatio: '1/1',
-              background: `linear-gradient(135deg, ${catMeta.bg} 0%, rgba(37,99,235,0.04) 100%)`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              borderBottom: '1px solid var(--slate-100)', position: 'relative', overflow: 'hidden',
+              background: 'var(--slate-50)',
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: 14,
+              cursor: 'pointer'
             }}
+            onClick={() => setIsFullscreen(true)}
           >
             {imageUrl ? (
               <Image
                 src={imageUrl}
                 alt={painting.title || 'Painting'}
-                onClick={() => setIsFullscreen(true)}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                placeholder="empty" // Or "blur" if we have blurDataURL
                 style={{
-                  objectFit: 'cover', objectPosition: 'center',
-                  display: 'block', transition: 'transform 0.4s ease', cursor: 'zoom-in',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.06)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
               />
             ) : (
               <div style={{ width: 64, height: 64, borderRadius: '50%', background: `linear-gradient(135deg, ${catMeta.color}22, ${catMeta.color}44)`, border: `2px solid ${catMeta.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>🎨</div>
             )}
 
-            {/* Status / Admin badges */}
-            <div style={{ position: 'absolute', top: 12, right: 12, display: 'flex', gap: 8, zIndex: 5 }}>
-              {isAdmin && (
-                <>
-                  <button onClick={(e) => { e.stopPropagation(); onEdit?.(painting); }} style={{ background: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.3)', color: 'var(--blue-600)', width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', backdropFilter: 'blur(4px)' }}>✏️</button>
-                  <button onClick={(e) => { e.stopPropagation(); onDelete?.(painting.id); }} style={{ background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.3)', color: '#be123c', width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', backdropFilter: 'blur(4px)' }}>🗑️</button>
-                </>
-              )}
-              {isAvailable ? <span className="status-available">AVAILABLE</span> : <span className="status-sold">SOLD OUT</span>}
+            {/* Subtle Top & Bottom Gradients */}
+            <div style={{
+              position: 'absolute', inset: 0, pointerEvents: 'none',
+              background: 'linear-gradient(to bottom, rgba(15,23,42,0.25) 0%, transparent 25%, transparent 70%, rgba(15,23,42,0.35) 100%)',
+              opacity: 0.7,
+              transition: 'opacity 0.3s ease'
+            }} />
+
+            {/* Floating Top Badges */}
+            <div style={{ position: 'absolute', top: 10, left: 10, right: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', zIndex: 5 }}>
+              <span style={{
+                background: 'rgba(255,255,255,0.92)',
+                backdropFilter: 'blur(8px)',
+                color: 'var(--slate-900)',
+                padding: '3px 9px',
+                borderRadius: 6,
+                fontSize: '0.6rem',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+              }}>
+                {catMeta.label}
+              </span>
+
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                {isAdmin && (
+                  <>
+                    <button onClick={(e) => { e.stopPropagation(); onEdit?.(painting); }} style={{ background: 'rgba(15,23,42,0.8)', border: 'none', color: '#ffffff', width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.75rem', backdropFilter: 'blur(6px)' }} title="Edit Painting">✏️</button>
+                    <button onClick={(e) => { e.stopPropagation(); onDelete?.(painting.id); }} style={{ background: 'rgba(225,29,72,0.85)', border: 'none', color: '#ffffff', width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.75rem', backdropFilter: 'blur(6px)' }} title="Delete Painting">🗑️</button>
+                  </>
+                )}
+                {isAvailable ? (
+                  <span style={{
+                    background: '#10b981',
+                    color: '#ffffff',
+                    padding: '3px 9px',
+                    borderRadius: 999,
+                    fontSize: '0.58rem',
+                    fontWeight: 800,
+                    letterSpacing: '0.06em',
+                    boxShadow: '0 2px 6px rgba(16,185,129,0.3)'
+                  }}>AVAILABLE</span>
+                ) : (
+                  <span style={{
+                    background: '#f43f5e',
+                    color: '#ffffff',
+                    padding: '3px 9px',
+                    borderRadius: 999,
+                    fontSize: '0.58rem',
+                    fontWeight: 800,
+                    letterSpacing: '0.06em',
+                    boxShadow: '0 2px 6px rgba(244,63,94,0.3)'
+                  }}>SOLD OUT</span>
+                )}
+              </div>
+            </div>
+
+            {/* Zoom Hint */}
+            <div style={{
+              position: 'absolute', bottom: 10, right: 10, zIndex: 5,
+              background: 'rgba(15,23,42,0.7)', backdropFilter: 'blur(6px)',
+              color: '#fff', padding: '3px 9px', borderRadius: 999,
+              fontSize: '0.62rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4
+            }}>
+              🔍 Zoom
             </div>
           </div>
 
-          <div style={{ padding: '18px 20px 22px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ marginBottom: 12 }}>
-              <span className="cat-badge font-mono" style={{ color: catMeta.color, backgroundColor: catMeta.bg, borderColor: catMeta.border }}>[{catMeta.label}]</span>
-            </div>
+          {/* ── Card Content Body (Dribbble Minimalist Product Style) ── */}
+          <div style={{ padding: '12px 6px 4px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+            {/* Title & Like */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
+              <h3 className="font-sora" style={{
+                fontSize: '0.98rem',
+                fontWeight: 700,
+                color: 'var(--slate-900)',
+                letterSpacing: '-0.01em',
+                lineHeight: 1.3,
+                margin: 0
+              }}>
+                {painting.title || 'Untitled Artwork'}
+              </h3>
 
-            <h3 className="font-sora" style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--slate-900)', letterSpacing: '-0.01em', marginBottom: 6, lineHeight: 1.35 }}>
-              {painting.title || 'Untitled Artwork'}
-            </h3>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: '0.62rem', color: 'var(--blue-600)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600, letterSpacing: '0.08em' }}>BY</span>
-                <span style={{ fontSize: '0.88rem', color: 'var(--slate-800)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>{painting.artist || 'Ankit Kumar'}</span>
-              </div>
-              <button onClick={handleLike} disabled={isLiked} style={{ background: 'transparent', border: 'none', cursor: isLiked ? 'default' : 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.8rem', color: isLiked ? '#ef4444' : 'var(--slate-400)', fontWeight: 600, transition: 'transform 0.2s', transform: isLiked ? 'scale(1.1)' : 'scale(1)' }}>
-                {isLiked ? '❤️' : '🤍'} {likes > 0 ? likes : ''}
-              </button>
-            </div>
-
-            {/* Footer Front: Flip for details */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 14, borderTop: '1px solid var(--slate-100)' }}>
               <button 
-                onClick={() => setIsFlipped(true)}
-                style={{
-                  background: 'var(--slate-100)', color: 'var(--slate-700)', border: 'none',
-                  padding: '6px 14px', borderRadius: 999, fontSize: '0.8rem', fontWeight: 700,
-                  cursor: 'pointer', transition: 'background 0.2s, color 0.2s'
+                onClick={(e) => { e.stopPropagation(); handleLike(); }} 
+                disabled={isLiked} 
+                style={{ 
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: isLiked ? 'default' : 'pointer', 
+                  display: 'flex', alignItems: 'center', gap: 3, 
+                  fontSize: '0.78rem', 
+                  color: isLiked ? '#ec4899' : 'var(--slate-400)', 
+                  fontWeight: 600, 
+                  transition: 'transform 0.2s ease',
+                  transform: isLiked ? 'scale(1.1)' : 'scale(1)',
+                  flexShrink: 0
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'var(--slate-200)'; e.currentTarget.style.color = 'var(--slate-900)' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'var(--slate-100)'; e.currentTarget.style.color = 'var(--slate-700)' }}
               >
-                🔄 Flip to view Details
+                {isLiked ? '❤️' : '🤍'} <span style={{ fontSize: '0.72rem', color: 'var(--slate-600)' }}>{likes > 0 ? likes : ''}</span>
               </button>
+            </div>
 
-              <div style={{ display: 'flex', gap: 6 }}>
+            {/* Sub-row: Artist & Rating */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ color: '#f59e0b', fontSize: '0.75rem' }}>★</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--slate-800)' }}>4.9</span>
+                <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)' }}>(24)</span>
+              </div>
+              <span style={{ color: 'var(--slate-300)', fontSize: '0.7rem' }}>•</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--slate-500)', fontWeight: 500 }}>{painting.artist || 'Ankit Kumar'}</span>
+            </div>
+
+            {/* Footer Row: Price & Actions */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 10, borderTop: '1px solid var(--slate-100)' }}>
+              <div>
+                <span style={{ fontSize: '0.62rem', color: 'var(--slate-400)', textTransform: 'uppercase', display: 'block', fontWeight: 600, letterSpacing: '0.05em' }}>Price</span>
+                {(!painting.price || painting.price <= 0) ? (
+                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981' }}>Inquire</span>
+                ) : (
+                  <span className="font-sora" style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--slate-900)' }}>
+                    ₹{Number(painting.price).toLocaleString('en-IN')}
+                  </span>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                 <button
                   onClick={handleShare}
-                  style={{ background: 'rgba(37,99,235,0.1)', color: 'var(--blue-600)', padding: '4px 10px', borderRadius: 999, fontSize: '0.7rem', fontWeight: 700, border: 'none', cursor: 'pointer' }}
+                  style={{
+                    background: 'var(--slate-50)', color: 'var(--slate-700)',
+                    width: 32, height: 32, borderRadius: '50%', fontSize: '0.8rem',
+                    border: '1px solid var(--slate-200)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s'
+                  }}
+                  title="Share Artwork"
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--slate-100)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'var(--slate-50)'}
                 >
-                  🔗 Share
+                  🔗
                 </button>
 
                 {painting.youtubeUrl && (
                   <button
                     onClick={() => videoId ? setIsVideoOpen(true) : window.open(painting.youtubeUrl, '_blank')}
-                    style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444', padding: '4px 10px', borderRadius: 999, fontSize: '0.7rem', fontWeight: 700, border: 'none', cursor: 'pointer' }}
-                  >▶ YouTube</button>
+                    style={{
+                      background: 'rgba(236,72,153,0.08)', color: '#ec4899',
+                      width: 32, height: 32, borderRadius: '50%', fontSize: '0.8rem',
+                      border: '1px solid rgba(236,72,153,0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s'
+                    }}
+                    title="Watch Video"
+                  >
+                    🎥
+                  </button>
                 )}
+
+                <button 
+                  onClick={() => setIsFlipped(true)}
+                  style={{
+                    background: 'var(--slate-900)',
+                    color: '#ffffff', border: 'none',
+                    padding: '7px 14px', borderRadius: 999, fontSize: '0.76rem', fontWeight: 700,
+                    cursor: 'pointer', transition: 'all 0.2s ease',
+                    boxShadow: '0 2px 8px rgba(15,23,42,0.15)',
+                    letterSpacing: '0.01em'
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#8b5cf6'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'var(--slate-900)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  View Details
+                </button>
               </div>
             </div>
           </div>
@@ -280,37 +398,56 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
             display: 'flex', flexDirection: 'column',
-            margin: 0, padding: 30
+            margin: 0, padding: '24px 26px',
+            borderRadius: 20,
+            boxShadow: '0 8px 30px rgba(15,23,42,0.06)',
+            background: 'var(--white)',
+            border: '1px solid var(--slate-100)'
           }}
         >
-          <div style={{ flex: 1 }}>
-            <h3 className="font-sora" style={{ fontSize: '1.2rem', marginBottom: 20, color: 'var(--slate-900)' }}>{painting.title}</h3>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <span className="font-mono" style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--blue-600)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                ARTWORK DETAILS
+              </span>
+              <button 
+                onClick={() => setIsFlipped(false)}
+                style={{ background: 'var(--slate-100)', color: 'var(--slate-700)', border: 'none', width: 26, height: 26, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}
+                title="Close Details"
+              >
+                ✕
+              </button>
+            </div>
+
+            <h3 className="font-sora" style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: 10, color: 'var(--slate-900)', lineHeight: 1.3 }}>
+              {painting.title || 'Untitled Artwork'}
+            </h3>
             
-            <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 20 }}>
-              {painting.description || "An exclusive original piece crafted with premium materials. Perfect for collectors who appreciate high-quality anime art."}
+            <p style={{ color: 'var(--slate-500)', fontSize: '0.86rem', lineHeight: 1.6, marginBottom: 18, flex: 1, overflowY: 'auto' }}>
+              {painting.description || "An exclusive original piece crafted with premium materials. Perfect for collectors who appreciate high-quality artwork."}
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 30 }}>
-              <div style={{ background: 'var(--slate-50)', padding: 12, borderRadius: 8 }}>
-                <div style={{ fontSize: '0.65rem', color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category</div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, marginTop: 4, color: 'var(--slate-900)' }}>{catMeta.label}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
+              <div style={{ background: 'var(--slate-50)', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--slate-100)' }}>
+                <div style={{ fontSize: '0.62rem', color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Category</div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, marginTop: 2, color: 'var(--slate-900)' }}>{catMeta.label}</div>
               </div>
-              <div style={{ background: 'var(--slate-50)', padding: 12, borderRadius: 8 }}>
-                <div style={{ fontSize: '0.65rem', color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, marginTop: 4, color: isAvailable ? '#4ade80' : '#f87171' }}>
-                  {isAvailable ? 'Available' : 'Sold Out'}
+              <div style={{ background: 'var(--slate-50)', padding: '10px 12px', borderRadius: 8, border: '1px solid var(--slate-100)' }}>
+                <div style={{ fontSize: '0.62rem', color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Status</div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, marginTop: 2, color: isAvailable ? '#059669' : '#e11d48' }}>
+                  {isAvailable ? 'AVAILABLE' : 'SOLD OUT'}
                 </div>
               </div>
             </div>
 
             {/* Price & Buy Button */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 14, borderTop: '1px solid var(--slate-100)' }}>
               <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--slate-400)' }}>Investment</div>
+                <div style={{ fontSize: '0.65rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.05em' }}>Price</div>
                 {(!painting.price || painting.price <= 0) ? (
-                   <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#25D366' }}>WhatsApp for Price</div>
+                   <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#059669' }}>Inquire Price</div>
                 ) : (
-                   <div style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--slate-900)' }}>
+                   <div className="font-sora" style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--slate-900)' }}>
                      ₹{Number(painting.price).toLocaleString('en-IN')}
                    </div>
                 )}
@@ -320,12 +457,15 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
                 <button 
                   onClick={handlePayment}
                   style={{
-                    background: (!painting.price || painting.price <= 0) ? '#25D366' : 'var(--slate-900)',
-                    color: 'white', border: 'none', padding: '10px 20px', borderRadius: 999, fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
-                    boxShadow: (!painting.price || painting.price <= 0) ? '0 4px 15px rgba(37, 211, 102, 0.3)' : '0 4px 15px rgba(15, 23, 42, 0.3)'
+                    background: (!painting.price || painting.price <= 0) ? '#25D366' : 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
+                    color: 'white', border: 'none', padding: '9px 18px', borderRadius: 999, fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer',
+                    boxShadow: (!painting.price || painting.price <= 0) ? '0 4px 14px rgba(37, 211, 102, 0.3)' : '0 4px 14px rgba(139, 92, 246, 0.4)',
+                    transition: 'transform 0.2s, box-shadow 0.2s'
                   }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                 >
-                  {(!painting.price || painting.price <= 0) ? 'WhatsApp Inquiry' : 'Buy with Razorpay'}
+                  {(!painting.price || painting.price <= 0) ? 'WhatsApp Inquiry' : 'Buy Now'}
                 </button>
               )}
             </div>
@@ -334,10 +474,12 @@ export default function PaintingCard({ painting, index, onDelete, onEdit, isAdmi
           <button 
             onClick={() => setIsFlipped(false)}
             style={{
-              background: 'var(--slate-100)', color: 'var(--slate-700)', border: 'none',
-              padding: '8px', borderRadius: 999, fontSize: '0.8rem', fontWeight: 600,
-              cursor: 'pointer', marginTop: 'auto'
+              background: 'var(--slate-50)', color: 'var(--slate-700)', border: '1px solid var(--slate-200)',
+              padding: '8px', borderRadius: 999, fontSize: '0.78rem', fontWeight: 600,
+              cursor: 'pointer', marginTop: 14, transition: 'background 0.2s'
             }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--slate-100)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'var(--slate-50)'}
           >
              ↩️ Back to Gallery
           </button>

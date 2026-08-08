@@ -137,7 +137,7 @@ export default function CommissionsGalleryModal({ isOpen, onClose }) {
         {/* ── Top gradient bar ── */}
         <div style={{
           height: 4,
-          background: 'var(--gradient-blue)',
+          backgroundImage: 'var(--gradient-blue)',
           backgroundSize: '200% 200%',
           animation: 'gradientFlow 4s ease infinite',
           borderRadius: '24px 24px 0 0',
@@ -430,7 +430,8 @@ export default function CommissionsGalleryModal({ isOpen, onClose }) {
                   }}
                   style={{
                     padding: '11px 24px', borderRadius: 'var(--radius-sm)',
-                    background: selected ? 'var(--gradient-blue)' : 'var(--slate-100)',
+                    backgroundImage: selected ? 'var(--gradient-blue)' : 'none',
+                    backgroundColor: selected ? 'transparent' : 'var(--slate-100)',
                     backgroundSize: '200% 200%',
                     animation: selected ? 'gradientFlow 4s ease infinite' : 'none',
                     color: selected ? '#fff' : 'var(--slate-400)',
