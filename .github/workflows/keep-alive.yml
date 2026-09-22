@@ -1,0 +1,22 @@
+name: Keep Backend Alive
+
+on:
+  schedule:
+    # Runs every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend
+        run: |
+          echo "Pinging Artistic Ankit backend to prevent cold start..."
+          response=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 https://ankit-backend-yxoi.onrender.com/api/paintings)
+          echo "Response status: $response"
+          if [ "$response" = "200" ]; then
+            echo "✅ Backend is alive and healthy!"
+          else
+            echo "⚠️ Backend returned status: $response"
+          fi
